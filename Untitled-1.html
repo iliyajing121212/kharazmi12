@@ -1,0 +1,3555 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هوش آرا | سایت آموزش ریاضی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <style>
+        /* استایل‌های پایه */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        :root {
+            --primary-color: #0066cc;
+            --hover-color: #0055b3;
+            --bg-color: #f9f3e6;
+            --text-color: #333;
+            --card-bg: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        /* تم تاریک */
+        body.dark-theme {
+            --primary-color: #4d94ff;
+            --hover-color: #66a3ff;
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --card-bg: #2a2a2a;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            --hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Vazir', 'Tahoma', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            direction: rtl;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            min-height: 100vh;
+        }
+
+        /* منوی کناری */
+        .sidebar {
+            background-color: var(--card-bg);
+            padding: 20px;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .logo h2 {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .section-title {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin: 15px 0 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #f0f0f0;
+            position: relative;
+        }
+
+        .section-title:before {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: -2px;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover {
+            background-color: rgba(0, 102, 204, 0.1);
+            color: var(--primary-color);
+            padding-right: 15px;
+        }
+
+        /* محتوای اصلی */
+        .main-content {
+            padding: 30px;
+            position: relative;
+        }
+
+        /* آیکون تنظیمات و منوی آن */
+        .settings-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .settings-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-color);
+            transition: transform 0.5s ease;
+        }
+
+        .settings-icon:hover {
+            box-shadow: var(--hover-shadow);
+        }
+
+        .settings-icon.active svg {
+            transform: rotate(180deg);
+        }
+
+        .settings-menu {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            width: 180px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--hover-shadow);
+            padding: 10px 0;
+            z-index: 99;
+            opacity: 0;
+            transform: translateY(-20px);
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .settings-menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .settings-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .settings-menu a:hover {
+            background-color: rgba(0, 102, 204, 0.1);
+            color: var(--primary-color);
+        }
+
+        .welcome-header {
+            text-align: right;
+            margin-bottom: 40px;
+        }
+
+        .welcome-header h1 {
+            font-size: 2rem;
+            color: var(--text-color);
+            font-weight: normal;
+        }
+
+        /* گرید آیکون‌ها */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .icon-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-container:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .icon-button:hover .icon-container:after {
+            left: 100%;
+        }
+
+        .icon-button:hover {
+            transform: translateY(-8px);
+        }
+
+        .icon-button:hover .icon-container {
+            box-shadow: 0 15px 25px rgba(0, 102, 204, 0.4);
+        }
+
+        .icon-button span {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .icon-button:hover span {
+            color: var(--primary-color);
+        }
+
+        /* بخش آزمون‌ها */
+        .exams-section {
+            margin-top: 50px;
+        }
+
+        .exams-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            text-align: right;
+        }
+
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .chapter-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .chapter-card h3 {
+            margin-bottom: 15px;
+            color: var(--text-color);
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .download-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-button .download-icon {
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .download-button:hover {
+            background-color: var(--hover-color);
+        }
+
+        .download-button:hover .download-icon {
+            transform: translateY(3px);
+        }
+
+        .download-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .download-button:hover::after {
+            left: 100%;
+        }
+
+        .purchase-button {
+            background-color: #ff9800;
+        }
+
+        .purchase-button:hover {
+            background-color: #f57c00;
+        }
+
+        .chapter-info {
+            font-size: 0.8rem;
+            color: #777;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .icons-row {
+            display: flex;
+            gap: 5px;
+        }
+
+        .icons-row svg {
+            color: #777;
+        }
+
+        /* صفحه درباره ما */
+        .about-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .about-page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .close-about {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--card-bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 1001;
+        }
+
+        .close-about:hover {
+            transform: rotate(90deg);
+            box-shadow: var(--hover-shadow);
+        }
+
+        /* هیرو سکشن */
+        .about-hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particles-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,102,204,0.9) 0%, rgba(0,46,93,0.9) 100%);
+            opacity: 0.8;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .logo-animation {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+        }
+
+        .animated-logo {
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo-circle {
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .logo-path {
+            animation: float 3s infinite ease-in-out;
+        }
+
+        .animated-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards 0.5s;
+        }
+
+        .animated-subtitle {
+            font-size: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards 0.8s;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: white;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1.5s;
+        }
+
+        .scroll-arrow {
+            margin-top: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        /* سکشن‌های محتوا */
+        .about-sections {
+            padding: 50px 0;
+        }
+
+        .about-section {
+            display: flex;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 100px;
+            padding: 0 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .about-section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-content {
+            flex: 1;
+            padding: 0 30px;
+        }
+
+        .section-image {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+            transition: width 0.5s ease;
+        }
+
+        html[lang="en"] .section-title:after {
+            right: auto;
+            left: 0;
+        }
+
+        .about-section:hover .section-title:after {
+            width: 100%;
+        }
+
+        .about-section p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+
+        /* سکشن ماموریت */
+        .floating-shapes {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .shape {
+            position: absolute;
+            font-size: 3rem;
+            color: var(--primary-color);
+            opacity: 0.8;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            top: 20%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            top: 70%;
+            left: 30%;
+            animation-delay: 1s;
+        }
+
+        .shape-3 {
+            top: 40%;
+            left: 70%;
+            animation-delay: 2s;
+        }
+
+        .shape-4 {
+            top: 10%;
+            left: 60%;
+            animation-delay: 3s;
+        }
+
+        .shape-5 {
+            top: 80%;
+            left: 60%;
+            animation-delay: 4s;
+        }
+
+        /* سکشن دبیر ریاضی - طراحی جدید */
+        .teacher-section {
+            position: relative;
+            padding: 50px 0;
+            background: linear-gradient(to bottom, transparent, rgba(144, 12, 63, 0.05), transparent);
+            border-radius: 20px;
+            margin: 80px 0;
+        }
+
+        .teacher-profile {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .teacher-image-container {
+            width: 220px;
+            height: 220px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .teacher-portrait {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(144, 12, 63, 0.3);
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .teacher-portrait:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(144, 12, 63, 0.4);
+        }
+
+        .teacher-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .math-symbols {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+        }
+
+        .math-symbol {
+            position: absolute;
+            font-size: 2rem;
+            color: #900c3f;
+            opacity: 0.7;
+            animation: floatSymbol 8s infinite ease-in-out;
+        }
+
+        @keyframes floatSymbol {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(10px, -15px) rotate(10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .math-symbol:nth-child(1) { top: -30px; left: 20px; animation-delay: 0s; }
+        .math-symbol:nth-child(2) { top: 20px; right: -20px; animation-delay: 1s; }
+        .math-symbol:nth-child(3) { bottom: 0; left: 50px; animation-delay: 2s; }
+        .math-symbol:nth-child(4) { bottom: 50px; right: 0; animation-delay: 3s; }
+        .math-symbol:nth-child(5) { top: 50px; left: -20px; animation-delay: 4s; }
+
+        .teacher-info {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .teacher-name {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #900c3f;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .teacher-name:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #900c3f, #f27a9e);
+            transition: width 0.5s ease;
+        }
+
+        .teacher-profile:hover .teacher-name:after {
+            width: 100%;
+        }
+
+        .teacher-title {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .teacher-bio {
+            line-height: 1.8;
+            margin-bottom: 25px;
+            position: relative;
+            padding-right: 20px;
+            border-right: 3px solid rgba(144, 12, 63, 0.3);
+        }
+
+        .math-formula-showcase {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .formula-card {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            width: calc(33.333% - 10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+        }
+
+        .formula-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .formula {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #900c3f;
+            margin-bottom: 10px;
+        }
+
+        .formula-name {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        /* سکشن برنامه‌نویس - طراحی جدید و بهبود یافته */
+        .developer-section {
+            margin-bottom: 150px;
+            position: relative;
+            padding: 50px 0;
+            background: linear-gradient(to bottom, transparent, rgba(0, 102, 204, 0.05), transparent);
+            border-radius: 20px;
+        }
+
+        .developer-profile {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 50px;
+            align-items: center;
+        }
+
+        .developer-image-container {
+            width: 220px;
+            height: 220px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+
+        .developer-image-container:hover {
+            transform: rotateY(10deg) rotateX(5deg);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .developer-image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0,102,204,0.5) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        .developer-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .developer-image-container:hover .developer-image {
+            transform: scale(1.05);
+        }
+
+        .developer-info {
+            flex: 1;
+        }
+
+        .developer-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .developer-name:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-color), #66a3ff);
+            transition: width 0.5s ease;
+        }
+
+        .developer-profile:hover .developer-name:after {
+            width: 100%;
+        }
+
+        .developer-title {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            color: var(--primary-color);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .social-link:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,102,204,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-link:hover:before {
+            opacity: 1;
+        }
+
+        /* Code Technologies Showcase - Completely Redesigned */
+        .code-technologies {
+            margin-top: 80px;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .tech-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .tech-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), #66a3ff);
+        }
+
+        .tech-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Code Distribution Chart */
+        .code-distribution {
+            margin-top: 40px;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .distribution-title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        .distribution-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .chart-bar {
+            width: 80px;
+            height: 0;
+            background: linear-gradient(to top, var(--primary-color), #66a3ff);
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            transition: height 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 20px rgba(0, 102, 204, 0.3);
+            overflow: hidden;
+        }
+
+        .chart-bar.animated {
+            animation: growBar 1.5s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .chart-bar:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: barShine 3s infinite;
+        }
+
+        @keyframes barShine {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes growBar {
+            0% { height: 0; }
+            100% { height: var(--target-height); }
+        }
+
+        .chart-bar.html {
+            --target-height: 250px;
+            background: linear-gradient(to top, #e34f26, #ff7d52);
+        }
+
+        .chart-bar.css {
+            --target-height: 220px;
+            background: linear-gradient(to top, #264de4, #56a5ff);
+        }
+
+        .chart-bar.js {
+            --target-height: 180px;
+            background: linear-gradient(to top, #f7df1e, #fff176);
+        }
+
+        .chart-bar.vue {
+            --target-height: 130px;
+            background: linear-gradient(to top, #41b883, #63d9a3);
+        }
+
+        .chart-bar.react {
+            --target-height: 200px;
+            background: linear-gradient(to top, #61dafb, #a6eaff);
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .bar-percentage {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--card-bg);
+            color: inherit;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transition: opacity 0.5s ease 1.5s;
+        }
+
+        .chart-bar.html .bar-percentage {
+            color: #e34f26;
+        }
+
+        .chart-bar.css .bar-percentage {
+            color: #264de4;
+        }
+
+        .chart-bar.js .bar-percentage {
+            color: #b0a81c;
+        }
+
+        .chart-bar.vue .bar-percentage {
+            color: #41b883;
+        }
+
+        .chart-bar.react .bar-percentage {
+            color: #61dafb;
+        }
+
+        .chart-bar.animated .bar-percentage {
+            opacity: 1;
+        }
+
+        /* Code Editor Tabs */
+        .code-editor-section {
+            margin-top: 80px;
+            position: relative;
+        }
+
+        .editor-tabs {
+            display: flex;
+            margin-bottom: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .editor-tab {
+            padding: 12px 25px;
+            background-color: rgba(30, 30, 30, 0.7);
+            color: #aaa;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            border-bottom: none;
+        }
+
+        .editor-tab.active {
+            background-color: #1e1e1e;
+            color: #fff;
+        }
+
+        .editor-tab:hover:not(.active) {
+            background-color: rgba(40, 40, 40, 0.9);
+            color: #ddd;
+        }
+
+        /* New Terminal UI Design */
+        .terminal-container {
+            background-color: #1e1e1e;
+            border-radius: 0 10px 10px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(5deg);
+            transition: all 0.5s ease;
+        }
+
+        .terminal-container:hover {
+            transform: perspective(1000px) rotateX(0deg) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .terminal-header {
+            background-color: #333;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .terminal-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-close {
+            background-color: #ff5f56;
+        }
+
+        .terminal-minimize {
+            background-color: #ffbd2e;
+        }
+
+        .terminal-maximize {
+            background-color: #27c93f;
+        }
+
+        .terminal-title {
+            margin-left: 15px;
+            color: #ddd;
+            font-size: 0.9rem;
+        }
+
+        .terminal-body {
+            padding: 15px;
+            color: #ddd;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .terminal-body.active {
+            display: block;
+        }
+
+        .code-line {
+            display: flex;
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: typeLine 0.5s forwards;
+        }
+
+        .code-line:nth-child(2) { animation-delay: 0.5s; }
+        .code-line:nth-child(3) { animation-delay: 1s; }
+        .code-line:nth-child(4) { animation-delay: 1.5s; }
+        .code-line:nth-child(5) { animation-delay: 2s; }
+        .code-line:nth-child(6) { animation-delay: 2.5s; }
+        .code-line:nth-child(7) { animation-delay: 3s; }
+        .code-line:nth-child(8) { animation-delay: 3.5s; }
+
+        @keyframes typeLine {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .line-number {
+            color: #666;
+            min-width: 25px;
+            text-align: right;
+            margin-right: 15px;
+            user-select: none;
+        }
+
+        .code-content {
+            flex: 1;
+        }
+
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .function { color: #dcdcaa; }
+        .comment { color: #6a9955; }
+        .tag { color: #569cd6; }
+        .attribute { color: #9cdcfe; }
+        .value { color: #ce9178; }
+        .punctuation { color: #d4d4d4; }
+        .operator { color: #d4d4d4; }
+        .variable { color: #9cdcfe; }
+        .number { color: #b5cea8; }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 14px;
+            background-color: #ddd;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Designer Section - Completely Redesigned */
+        .designer-section {
+            position: relative;
+            background: linear-gradient(to bottom, transparent, rgba(255, 152, 0, 0.05), transparent);
+            padding: 50px 0;
+            border-radius: 30px;
+            margin: 80px 0;
+        }
+
+        .designer-profile {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+            align-items: center;
+            position: relative;
+        }
+
+        .designer-image-container {
+            width: 250px;
+            height: 250px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .designer-portrait {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+
+        .designer-portrait:hover {
+            transform: perspective(1000px) rotateY(10deg) rotateX(5deg);
+        }
+
+        .designer-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .designer-portrait:hover .designer-image {
+            transform: scale(1.05);
+        }
+
+        .designer-frame {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border: 3px solid #ff9800;
+            border-radius: 25px;
+            z-index: -1;
+            animation: frameRotate 10s infinite linear;
+        }
+
+        @keyframes frameRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .designer-tools {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .tool-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: floatAround 15s infinite linear;
+            z-index: 3;
+        }
+
+        .tool-icon img {
+            width: 25px;
+            height: 25px;
+        }
+
+        .tool-icon:nth-child(1) {
+            top: -20px;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .tool-icon:nth-child(2) {
+            top: 30%;
+            right: -20px;
+            animation-delay: -3s;
+        }
+
+        .tool-icon:nth-child(3) {
+            bottom: -10px;
+            left: 30%;
+            animation-delay: -6s;
+        }
+
+        .tool-icon:nth-child(4) {
+            top: 20%;
+            left: -20px;
+            animation-delay: -9s;
+        }
+
+        .tool-icon:nth-child(5) {
+            bottom: 30%;
+            right: -10px;
+            animation-delay: -12s;
+        }
+
+        @keyframes floatAround {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(10px, -10px) scale(1.1); }
+            50% { transform: translate(0, 0) scale(1); }
+            75% { transform: translate(-10px, 10px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        .designer-info {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .designer-name {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff9800;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+        }
+
+        .designer-name::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff9800, #ffcc80);
+            transition: width 0.5s ease;
+        }
+
+        .designer-profile:hover .designer-name::after {
+            width: 100%;
+        }
+
+        .designer-title {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .designer-bio {
+            line-height: 1.8;
+            margin-bottom: 25px;
+            position: relative;
+            padding-right: 20px;
+            border-right: 3px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .designer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .designer-social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            color: #ff9800;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .designer-social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff9800, #ffcc80);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .designer-social-link:hover {
+            transform: translateY(-8px) rotate(360deg);
+            color: white;
+            box-shadow: 0 10px 20px rgba(255, 152, 0, 0.3);
+        }
+
+        .designer-social-link:hover::before {
+            opacity: 1;
+        }
+
+        /* Design Showcase */
+        .design-showcase {
+            margin-top: 50px;
+            position: relative;
+        }
+
+        .design-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 200px);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .design-item {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow);
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        .design-item:hover {
+            transform: scale(1.03);
+            box-shadow: var(--hover-shadow);
+            z-index: 2;
+        }
+
+        .design-item:nth-child(1) {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+        }
+
+        .design-item:nth-child(4) {
+            grid-column: 3 / 4;
+            grid-row: 1 / 3;
+        }
+
+        .design-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .design-item:hover .design-image {
+            transform: scale(1.1);
+        }
+
+        .design-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            color: white;
+        }
+
+        .design-item:hover .design-overlay {
+            opacity: 1;
+        }
+
+        .design-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .design-tag {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* صفحه محاسبات */
+        .calculation-page, .graph-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .calculation-page.active, .graph-page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .calculation-header, .graph-header {
+            background-color: var(--card-bg);
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .calculation-title, .graph-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--primary-color);
+        }
+
+        .back-button svg {
+            margin-left: 8px;
+        }
+
+        .calculation-content, .graph-content {
+            flex: 1;
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .calculator-container, .graph-container {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .calculator-header, .graph-header-inner {
+            margin-bottom: 20px;
+        }
+
+        .calculator-header h2, .graph-header-inner h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .calculator-header p, .graph-header-inner p {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .calculator-form, .graph-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+        }
+
+        .calculate-btn, .draw-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .calculate-btn:hover, .draw-btn:hover {
+            background-color: var(--hover-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: rgba(0, 102, 204, 0.1);
+            display: none;
+        }
+
+        .result-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        /* Graph Drawing Page */
+        .graph-drawing-area {
+            width: 100%;
+            height: 400px;
+            background-color: #fffbef;
+            border-radius: 8px;
+            margin-top: 20px;
+            position: relative;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .graph-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .graph-tool-btn {
+            background-color: var(--card-bg);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+        }
+
+        .graph-tool-btn:hover {
+            background-color: rgba(0, 102, 204, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .graph-tool-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .function-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .function-label {
+            font-weight: 500;
+            font-size: 1.2rem;
+        }
+
+        .function-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .function-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+        }
+
+        .function-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .function-btn:hover {
+            background-color: var(--hover-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+        }
+
+        /* انیمیشن تغییر تم */
+        .theme-switch-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .theme-switch-animation.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .day-night-scene {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .sun-moon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .sun {
+            background: radial-gradient(circle, #ffcc00 0%, #ff9900 100%);
+            box-shadow: 0 0 40px #ffcc00, 0 0 80px #ff9900;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .sun-rays {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .sun-ray {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 2px;
+            background-color: rgba(255, 204, 0, 0.6);
+            transform-origin: 0 0;
+        }
+
+        .sun-ray:nth-child(1) { transform: rotate(0deg); }
+        .sun-ray:nth-child(2) { transform: rotate(45deg); }
+        .sun-ray:nth-child(3) { transform: rotate(90deg); }
+        .sun-ray:nth-child(4) { transform: rotate(135deg); }
+        .sun-ray:nth-child(5) { transform: rotate(180deg); }
+        .sun-ray:nth-child(6) { transform: rotate(225deg); }
+        .sun-ray:nth-child(7) { transform: rotate(270deg); }
+        .sun-ray:nth-child(8) { transform: rotate(315deg); }
+
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        .cloud {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50px;
+            opacity: 0.8;
+        }
+
+        .cloud-1 {
+            width: 60px;
+            height: 20px;
+            top: 30%;
+            left: 20%;
+            animation: cloudMove1 30s infinite linear;
+        }
+
+        .cloud-2 {
+            width: 80px;
+            height: 30px;
+            top: 50%;
+            right: 10%;
+            animation: cloudMove2 25s infinite linear;
+        }
+
+        @keyframes cloudMove1 {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(50px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes cloudMove2 {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-70px); }
+            100% { transform: translateX(0); }
+        }
+
+        .moon {
+            background: radial-gradient(circle at 30% 30%, #f0f0f0 0%, #d0d0d0 100%);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        .moon-crater {
+            position: absolute;
+            background-color: rgba(180, 180, 180, 0.5);
+            border-radius: 50%;
+        }
+
+        .crater-1 {
+            width: 20px;
+            height: 20px;
+            top: 15%;
+            left: 25%;
+        }
+
+        .crater-2 {
+            width: 15px;
+            height: 15px;
+            top: 60%;
+            left: 40%;
+        }
+
+        .crater-3 {
+            width: 10px;
+            height: 10px;
+            top: 40%;
+            left: 70%;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 4px #fff;
+            animation: starTwinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .star:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .star:nth-child(2) { top: 30%; left: 80%; animation-delay: 0.5s; }
+        .star:nth-child(3) { top: 70%; left: 30%; animation-delay: 1s; }
+        .star:nth-child(4) { top: 40%; left: 60%; animation-delay: 1.5s; }
+        .star:nth-child(5) { top: 80%; left: 70%; animation-delay: 2s; }
+        .star:nth-child(6) { top: 10%; left: 40%; animation-delay: 2.5s; }
+        .star:nth-child(7) { top: 50%; left: 20%; animation-delay: 1.2s; }
+        .star:nth-child(8) { top: 60%; left: 90%; animation-delay: 0.7s; }
+
+        .sky-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all 1.5s ease;
+        }
+
+        .day-sky {
+            background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+            opacity: 1;
+        }
+
+        .night-sky {
+            background: linear-gradient(to bottom, #0B3D91, #1A237E);
+            opacity: 0;
+        }
+
+        body.dark-theme .night-sky {
+            opacity: 1;
+        }
+
+        body.dark-theme .day-sky {
+            opacity: 0;
+        }
+
+        body.dark-theme .moon {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        body.dark-theme .sun {
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        body.dark-theme .stars {
+            opacity: 1;
+        }
+
+        body.dark-theme .clouds {
+            opacity: 0;
+        }
+
+        body.light-theme .sun {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        body.light-theme .moon {
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        body.light-theme .clouds {
+            opacity: 1;
+        }
+
+        body.light-theme .stars {
+            opacity: 0;
+        }
+
+        /* انیمیشن‌ها */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes messageFloat {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.1);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* واکنش‌گرایی */
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr 250px;
+            }
+
+            .examples-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .code-features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .design-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .icon-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .chapters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-section, .designer-profile, .developer-profile, .teacher-profile {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .section-content {
+                order: 1;
+            }
+
+            .section-image, .designer-image-container, .developer-image-container, .teacher-image-container {
+                order: 2;
+                margin-top: 30px;
+            }
+
+            .section-title:after {
+                right: 50%;
+                transform: translateX(50%);
+            }
+
+            html[lang="en"] .section-title:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .social-links, .designer-social {
+                justify-content: center;
+            }
+
+            .designer-bio, .teacher-bio {
+                padding-right: 0;
+                padding-left: 0;
+                border-right: none;
+                border-left: none;
+                border-top: 3px solid rgba(255, 152, 0, 0.3);
+                padding-top: 20px;
+            }
+
+            .teacher-bio {
+                border-top-color: rgba(144, 12, 63, 0.3);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .icon-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .animated-title {
+                font-size: 2.5rem;
+            }
+
+            .animated-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .code-features {
+                grid-template-columns: 1fr;
+            }
+
+            .design-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .design-item:nth-child(1),
+            .design-item:nth-child(4) {
+                grid-column: auto;
+                grid-row: auto;
+            }
+
+            .chart-container {
+                gap: 20px;
+            }
+
+            .chart-bar {
+                width: 60px;
+            }
+
+            .math-formula-showcase {
+                gap: 10px;
+            }
+
+            .formula-card {
+                width: calc(50% - 10px);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .chapters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .animated-title {
+                font-size: 2rem;
+            }
+
+            .designer-frame {
+                display: none;
+            }
+
+            .chart-container {
+                flex-wrap: wrap;
+                height: auto;
+                justify-content: center;
+                gap: 40px;
+            }
+
+            .chart-bar {
+                margin-bottom: 40px;
+            }
+
+            .formula-card {
+                width: 100%;
+            }
+        }
+
+        .fa-lang {
+            display: block;
+        }
+
+        .en-lang {
+            display: none;
+        }
+
+        html[lang="en"] .fa-lang {
+            display: none;
+        }
+
+        html[lang="en"] .en-lang {
+            display: block;
+        }
+
+        html[lang="en"] {
+            direction: ltr;
+        }
+
+        html[lang="en"] .sidebar {
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <div class="container">
+        <main class="main-content">
+            <div class="settings-icon" id="settingsIcon" onclick="toggleSettingsMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </div>
+
+            <div class="settings-menu" id="settingsMenu">
+                <a href="#" onclick="showAboutPage()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 5px;"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                    <span class="fa-lang">درباره ما</span>
+                    <span class="en-lang">About Us</span>
+                </a>
+                <a href="#" onclick="toggleTheme()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 5px;"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2"></path><path d="M12 21v2"></path><path d="M4.22 4.22l1.42 1.42"></path><path d="M18.36 18.36l1.42 1.42"></path><path d="M1 12h2"></path><path d="M21 12h2"></path><path d="M4.22 19.78l1.42-1.42"></path><path d="M18.36 5.64l1.42-1.42"></path></svg>
+                    <span class="fa-lang">روشن / تاریک</span>
+                    <span class="en-lang">Light / Dark</span>
+                </a>
+                <a href="#" onclick="toggleLanguage()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 5px;"><path d="M2 12h1"></path><path d="M6 12h1"></path><path d="M10 12h11"></path><path d="M5 8l-3 4 3 4"></path></svg>
+                    <span class="fa-lang">فا / En</span>
+                    <span class="en-lang">En / فا</span>
+                </a>
+            </div>
+
+            <header class="welcome-header">
+                <h1 class="fa-lang">خوش آمدید</h1>
+                <h1 class="en-lang">Welcome</h1>
+            </header>
+
+            <div class="icon-grid">
+                <div class="icon-button" onclick="showCalculationPage()">
+                    <div class="icon-container">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="25" y="25" width="50" height="50" fill="white" opacity="0.8" rx="5" />
+                            <line x1="25" y1="40" x2="75" y2="40" stroke="blue" stroke-width="2" />
+                            <line x1="40" y1="25" x2="40" y2="75" stroke="blue" stroke-width="2" />
+                            <line x1="60" y1="25" x2="60" y2="75" stroke="blue" stroke-width="2" />
+                            <line x1="25" y1="55" x2="75" y2="55" stroke="blue" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <span class="fa-lang">محاسبات</span>
+                    <span class="en-lang">Calculations</span>
+                </div>
+
+                <div class="icon-button">
+                    <div class="icon-container">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="35" cy="50" r="30" fill="white" opacity="0.8" />
+                            <circle cx="65" cy="50" r="30" fill="white" opacity="0.8" />
+                            <path d="M35 25 L35 75 M25 35 L45 35 M25 65 L45 65" stroke="white" stroke-width="2" fill="none" />
+                            <path d="M65 25 L65 75 M55 35 L75 35 M55 65 L75 65" stroke="white" stroke-width="2" fill="none" />
+                        </svg>
+                    </div>
+                    <span class="fa-lang">مجموعه ها</span>
+                    <span class="en-lang">Sets</span>
+                </div>
+
+                <div class="icon-button">
+                    <div class="icon-container">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30 30 Q50 20 70 30 Q80 50 70 70 Q50 80 30 70 Q20 50 30 30 Z" fill="white" opacity="0.8" />
+                            <path d="M40 40 L60 60 M40 60 L60 40" stroke="white" stroke-width="3" />
+                        </svg>
+                    </div>
+                    <span class="fa-lang">روابط طولی</span>
+                    <span class="en-lang">Relations</span>
+                </div>
+
+                <div class="icon-button">
+                    <div class="icon-container">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <text x="30" y="60" font-size="40" fill="white">x²</text>
+                        </svg>
+                    </div>
+                    <span class="fa-lang">فرمول ها</span>
+                    <span class="en-lang">Formulas</span>
+                </div>
+
+                <div class="icon-button">
+                    <div class="icon-container">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="25" fill="white" opacity="0.8" />
+                            <path d="M35 50 Q50 65 65 50" stroke="blue" stroke-width="3" fill="none" />
+                            <circle cx="40" cy="40" r="3" fill="blue" />
+                            <circle cx="60" cy="40" r="3" fill="blue" />
+                        </svg>
+                    </div>
+                    <span class="fa-lang">...</span>
+                    <span class="en-lang">...</span>
+                </div>
+
+                <div class="icon-button">
+                    <div class="icon-container">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <text x="30" y="65" font-size="45" fill="white">√</text>
+                        </svg>
+                    </div>
+                    <span class="fa-lang">رادیکال</span>
+                    <span class="en-lang">Radical</span>
+                </div>
+
+                <div class="icon-button">
+                    <div class="icon-container">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M25 75 L75 75 L50 25 Z" fill="white" opacity="0.8" />
+                            <path d="M50 75 L50 25" stroke="blue" stroke-width="2" />
+                            <path d="M25 75 L75 75" stroke="blue" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <span class="fa-lang">مثلثات</span>
+                    <span class="en-lang">Trigonometry</span>
+                </div>
+
+                <div class="icon-button" onclick="showGraphPage()">
+                    <div class="icon-container">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M25 25 L25 75 L75 75" stroke="white" stroke-width="3" fill="none" />
+                            <path d="M25 75 L75 25" stroke="white" stroke-width="3" fill="none" />
+                            <circle cx="40" cy="60" r="3" fill="white" />
+                            <circle cx="55" cy="45" r="3" fill="white" />
+                            <circle cx="65" cy="35" r="3" fill="white" />
+                        </svg>
+                    </div>
+                    <span class="fa-lang">رسم نمودار</span>
+                    <span class="en-lang">Graph Drawing</span>
+                </div>
+            </div>
+
+            <div class="exams-section">
+                <h2 class="fa-lang">آزمون ها</h2>
+                <h2 class="en-lang">Exams</h2>
+                <div class="chapters-grid">
+                    <div class="chapter-card">
+                        <h3 class="fa-lang">فصل اول</h3>
+                        <h3 class="en-lang">Chapter 1</h3>
+                        <button class="download-button">
+                            <span class="download-icon">⬇️</span>
+                            <span class="fa-lang">دانلود</span>
+                            <span class="en-lang">Download</span>
+                        </button>
+                        <div class="chapter-info">
+                            <span class="fa-lang">طراح: سیمین جعفری</span>
+                            <span class="en-lang">Author: Simin Jafari</span>
+                            <div class="icons-row">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chapter-card">
+                        <h3 class="fa-lang">فصل دوم</h3>
+                        <h3 class="en-lang">Chapter 2</h3>
+                        <button class="download-button">
+                            <span class="download-icon">⬇️</span>
+                            <span class="fa-lang">دانلود</span>
+                            <span class="en-lang">Download</span>
+                        </button>
+                        <div class="chapter-info">
+                            <span class="fa-lang">طراح: اکبر موسوی</span>
+                            <span class="en-lang">Author: Akbar Mousavi</span>
+                            <div class="icons-row">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chapter-card">
+                        <h3 class="fa-lang">فصل سوم</h3>
+                        <h3 class="en-lang">Chapter 3</h3>
+                        <button class="download-button">
+                            <span class="download-icon">⬇️</span>
+                            <span class="fa-lang">دانلود</span>
+                            <span class="en-lang">Download</span>
+                        </button>
+                        <div class="chapter-info">
+                            <span class="fa-lang">طراح: علی جعفری</span>
+                            <span class="en-lang">Author: Ali Jafari</span>
+                            <div class="icons-row">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chapter-card">
+                        <h3 class="fa-lang">فصل چهارم</h3>
+                        <h3 class="en-lang">Chapter 4</h3>
+                        <button class="download-button purchase-button">
+                            <span class="download-icon">⬇️</span>
+                            <span class="fa-lang">خرید فایل</span>
+                            <span class="en-lang">Buy File</span>
+                        </button>
+                        <div class="chapter-info">
+                            <span class="fa-lang">طراح: مهدی عباسی</span>
+                            <span class="en-lang">Author: Mehdi Abbasi</span>
+                            <div class="icons-row">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="40" fill="#0066cc" />
+                        <path d="M30 50 Q50 20 70 50 Q50 80 30 50 Z" fill="white" />
+                    </svg>
+                </div>
+                <h2 class="fa-lang">هوش آرا</h2>
+                <h2 class="en-lang">Hoosh Ara</h2>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title fa-lang">محاسبات</h3>
+                <h3 class="section-title en-lang">Calculations</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#" onclick="showCalculationPage()">
+                        <span class="fa-lang">محاسبات عددی</span>
+                        <span class="en-lang">Numerical Calculations</span>
+                    </a></li>
+                    <li><a href="#" onclick="showGraphPage()">
+                        <span class="fa-lang">کشیدن نمودارها</span>
+                        <span class="en-lang">Drawing Graphs</span>
+                    </a></li>
+                    <li><a href="#">
+                        <span class="fa-lang">روابط طولی و مثلثات</span>
+                        <span class="en-lang">Relations & Trigonometry</span>
+                    </a></li>
+                    <li><a href="#">
+                        <span class="fa-lang">مجموعه‌ها و نمودار ون</span>
+                        <span class="en-lang">Sets & Venn Diagrams</span>
+                    </a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title fa-lang">اثبات ها</h3>
+                <h3 class="section-title en-lang">Proofs</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#">
+                        <span class="fa-lang">اثبات‌های هندسی</span>
+                        <span class="en-lang">Geometric Proofs</span>
+                    </a></li>
+                    <li><a href="#">
+                        <span class="fa-lang">اثبات‌های جبری کاربردی</span>
+                        <span class="en-lang">Applied Algebraic Proofs</span>
+                    </a></li>
+                    <li><a href="#">
+                        <span class="fa-lang">اثبات قضیه فیثاغورث</span>
+                        <span class="en-lang">Pythagoras Theorem Proof</span>
+                    </a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title fa-lang">فرمول ها</h3>
+                <h3 class="section-title en-lang">Formulas</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#">
+                        <span class="fa-lang">فصل ۱: مجموعه‌ها</span>
+                        <span class="en-lang">Chapter 1: Sets</span>
+                    </a></li>
+                    <li><a href="#">
+                        <span class="fa-lang">فصل ۲: اعداد حقیقی</span>
+                        <span class="en-lang">Chapter 2: Real Numbers</span>
+                    </a></li>
+                    <li><a href="#">
+                        <span class="fa-lang">فصل ۳: اعداد و روابط در هندسه</span>
+                        <span class="en-lang">Chapter 3: Numbers & Geometry</span>
+                    </a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <!-- صفحه درباره ما با طراحی جدید و انیمیشن‌های پیشرفته -->
+    <div class="about-page" id="aboutPage">
+        <div class="close-about" onclick="closeAboutPage()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+
+        <div class="about-hero">
+            <div class="hero-background">
+                <div class="particles-container" id="particles-js"></div>
+                ادامه کد HTML از قسمت قطع شده:
+
+                ```html
+                                <div class="hero-overlay"></div>
+                            </div>
+                            <div class="hero-content">
+                                <div class="logo-animation">
+                                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="animated-logo">
+                                        <circle cx="50" cy="50" r="40" fill="#0066cc" class="logo-circle" />
+                                        <path d="M30 50 Q50 20 70 50 Q50 80 30 50 Z" fill="white" class="logo-path" />
+                                    </svg>
+                                </div>
+                                <h1 class="fa-lang animated-title">درباره هوش آرا</h1>
+                                <h1 class="en-lang animated-title">About Hoosh Ara</h1>
+                                <p class="fa-lang animated-subtitle">آموزش هوشمند ریاضی با نگاهی نو</p>
+                                <p class="en-lang animated-subtitle">Smart Math Education with a Fresh Perspective</p>
+                            </div>
+
+                            <div class="scroll-indicator">
+                                <span class="fa-lang">پایین بروید</span>
+                                <span class="en-lang">Scroll Down</span>
+                                <div class="scroll-arrow">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 5v14M5 12l7 7 7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="about-sections">
+                            <section class="about-section mission-section reveal-section">
+                                <div class="section-content">
+                                    <h2 class="fa-lang section-title">ماموریت ما</h2>
+                                    <h2 class="en-lang section-title">Our Mission</h2>
+                                    <p class="fa-lang">هوش آرا با هدف ساده‌سازی یادگیری ریاضی و ارائه روش‌های نوین آموزشی ایجاد شده است. ما معتقدیم ریاضی می‌تواند برای همه جذاب و قابل درک باشد، به شرطی که با روش درست آموزش داده شود. ماموریت ما ایجاد تجربه‌ای لذت‌بخش از یادگیری ریاضی است.</p>
+                                    <p class="en-lang">Hoosh Ara was created with the goal of simplifying math learning and providing innovative teaching methods. We believe mathematics can be engaging and understandable for everyone, provided it's taught the right way. Our mission is to create an enjoyable experience of learning mathematics.</p>
+                                </div>
+                                <div class="section-image">
+                                    <div class="floating-shapes">
+                                        <div class="shape shape-1">∑</div>
+                                        <div class="shape shape-2">π</div>
+                                        <div class="shape shape-3">∞</div>
+                                        <div class="shape shape-4">√</div>
+                                        <div class="shape shape-5">∫</div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- بخش دبیر ریاضی - طراحی جدید -->
+                            <section class="about-section teacher-section reveal-section">
+                                <div class="section-content">
+                                    <h2 class="fa-lang section-title">دبیر ریاضی</h2>
+                                    <h2 class="en-lang section-title">Math Teacher</h2>
+                                    <div class="teacher-profile">
+                                        <div class="teacher-image-container">
+                                            <div class="teacher-portrait">
+                                                <img src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Math Teacher" class="teacher-image">
+                                            </div>
+                                            <div class="math-symbols">
+                                                <div class="math-symbol">∫</div>
+                                                <div class="math-symbol">π</div>
+                                                <div class="math-symbol">∑</div>
+                                                <div class="math-symbol">√</div>
+                                                <div class="math-symbol">∞</div>
+                                            </div>
+                                        </div>
+                                        <div class="teacher-info">
+                                            <h3 class="teacher-name fa-lang">دکتر زهرا محمدی</h3>
+                                            <h3 class="teacher-name en-lang">Dr. Zahra Mohammadi</h3>
+                                            <div class="teacher-title fa-lang">دبیر ارشد ریاضی و مشاور محتوای آموزشی</div>
+                                            <div class="teacher-title en-lang">Senior Math Teacher & Educational Content Advisor</div>
+                                            <p class="teacher-bio fa-lang">دکتر زهرا محمدی با بیش از 15 سال سابقه تدریس ریاضی در مدارس و دانشگاه‌های معتبر، مشاور اصلی محتوای آموزشی سایت هوش آرا است. تخصص او در ساده‌سازی مفاهیم پیچیده ریاضی و ارائه روش‌های خلاقانه برای حل مسائل، به طراحی بخش‌های محاسباتی و آموزشی سایت کمک شایانی کرده است.</p>
+                                            <p class="teacher-bio en-lang">Dr. Zahra Mohammadi, with over 15 years of experience teaching mathematics in reputable schools and universities, is the main advisor for the educational content of Hoosh Ara. Her expertise in simplifying complex mathematical concepts and providing creative methods for problem-solving has greatly contributed to the design of the computational and educational sections of the site.</p>
+                                        </div>
+                                    </div>
+                                    <div class="math-formula-showcase">
+                                        <div class="formula-card">
+                                            <div class="formula">E = mc²</div>
+                                            <div class="formula-name">فرمول انیشتین</div>
+                                        </div>
+                                        <div class="formula-card">
+                                            <div class="formula">a² + b² = c²</div>
+                                            <div class="formula-name">قضیه فیثاغورث</div>
+                                        </div>
+                                        <div class="formula-card">
+                                            <div class="formula">∫ f(x) dx</div>
+                                            <div class="formula-name">انتگرال نامعین</div>
+                                        </div>
+                                        <div class="formula-card">
+                                            <div class="formula">F = G(m₁m₂/r²)</div>
+                                            <div class="formula-name">قانون گرانش نیوتن</div>
+                                        </div>
+                                        <div class="formula-card">
+                                            <div class="formula">e^(iπ) + 1 = 0</div>
+                                            <div class="formula-name">اتحاد اویلر</div>
+                                        </div>
+                                        <div class="formula-card">
+                                            <div class="formula">sin²θ + cos²θ = 1</div>
+                                            <div class="formula-name">اتحاد مثلثاتی پایه</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- بخش برنامه‌نویس - طراحی بهبود یافته -->
+                            <section class="about-section developer-section reveal-section">
+                                <div class="section-content">
+                                    <h2 class="fa-lang section-title">برنامه‌نویس سایت</h2>
+                                    <h2 class="en-lang section-title">Site Developer</h2>
+                                    <div class="developer-profile">
+                                        <div class="developer-image-container">
+                                            <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Developer" class="developer-image">
+                                        </div>
+                                        <div class="developer-info">
+                                            <h3 class="developer-name fa-lang">حسین رضایی</h3>
+                                            <h3 class="developer-name en-lang">Hossein Rezaei</h3>
+                                            <div class="developer-title fa-lang">برنامه‌نویس ارشد فرانت‌اند و بک‌اند</div>
+                                            <div class="developer-title en-lang">Senior Front-end & Back-end Developer</div>
+                                            <p class="fa-lang">مهندس حسین رضایی، برنامه‌نویس ارشد با بیش از 8 سال تجربه در توسعه وب، مسئول کدنویسی و پیاده‌سازی فنی سایت هوش آرا است. تخصص او در زمینه فرانت‌اند و بک‌اند، امکان ایجاد یک پلتفرم آموزشی یکپارچه، روان و کاربرپسند را فراهم کرده است.</p>
+                                            <p class="en-lang">Eng. Hossein Rezaei, a senior developer with over 8 years of experience in web development, is responsible for coding and technical implementation of the Hoosh Ara site. His expertise in front-end and back-end development has enabled the creation of an integrated, smooth, and user-friendly educational platform.</p>
+
+                                            <div class="social-links">
+                                                <a href="#" class="social-link">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                                </a>
+                                                <a href="#" class="social-link">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                                                </a>
+                                                <a href="#" class="social-link">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- نمایش درصد کدهای استفاده شده در سایت -->
+                                    <div class="code-distribution">
+                                        <h3 class="distribution-title fa-lang">زبان‌های برنامه‌نویسی استفاده شده در سایت</h3>
+                                        <h3 class="distribution-title en-lang">Programming Languages Used in the Site</h3>
+                                        <div class="distribution-container">
+                                            <div class="chart-container">
+                                                <div class="chart-bar html" id="htmlBar">
+                                                    <div class="bar-percentage">45%</div>
+                                                    <div class="bar-label">HTML5</div>
+                                                </div>
+                                                <div class="chart-bar css" id="cssBar">
+                                                    <div class="bar-percentage">35%</div>
+                                                    <div class="bar-label">CSS3</div>
+                                                </div>
+                                                <div class="chart-bar js" id="jsBar">
+                                                    <div class="bar-percentage">25%</div>
+                                                    <div class="bar-label">JavaScript</div>
+                                                </div>
+                                                <div class="chart-bar vue" id="vueBar">
+                                                    <div class="bar-percentage">15%</div>
+                                                    <div class="bar-label">Vue.js</div>
+                                                </div>
+                                                <div class="chart-bar react" id="reactBar">
+                                                    <div class="bar-percentage">30%</div>
+                                                    <div class="bar-label">React</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- نمایش نمونه کدها با طراحی بهتر -->
+                                    <div class="code-editor-section">
+                                        <div class="editor-tabs">
+                                            <div class="editor-tab active" data-tab="html">HTML5</div>
+                                            <div class="editor-tab" data-tab="css">CSS3</div>
+                                            <div class="editor-tab" data-tab="js">JavaScript</div>
+                                            <div class="editor-tab" data-tab="vue">Vue.js</div>
+                                            <div class="editor-tab" data-tab="react">React</div>
+                                        </div>
+                                        <div class="terminal-container">
+                                            <div class="terminal-header">
+                                                <div class="terminal-controls">
+                                                    <div class="terminal-control terminal-close"></div>
+                                                    <div class="terminal-control terminal-minimize"></div>
+                                                    <div class="terminal-control terminal-maximize"></div>
+                                                </div>
+                                                <div class="terminal-title">code_sample.html</div>
+                                            </div>
+                                            <div class="terminal-body active" id="html-code">
+                                                <div class="code-line">
+                                                    <div class="line-number">1</div>
+                                                    <div class="code-content"><span class="tag">&lt;!DOCTYPE <span class="attribute">html</span>&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">2</div>
+                                                    <div class="code-content"><span class="tag">&lt;html <span class="attribute">lang</span>=<span class="value">"fa"</span> <span class="attribute">dir</span>=<span class="value">"rtl"</span>&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">3</div>
+                                                    <div class="code-content"><span class="tag">&lt;head&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">4</div>
+                                                    <div class="code-content">  <span class="tag">&lt;meta <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">5</div>
+                                                    <div class="code-content">  <span class="tag">&lt;title&gt;</span>هوش آرا | آموزش ریاضی<span class="tag">&lt;/title&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">6</div>
+                                                    <div class="code-content"><span class="tag">&lt;/head&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">7</div>
+                                                    <div class="code-content"><span class="tag">&lt;body&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">8</div>
+                                                    <div class="code-content">  <span class="tag">&lt;h1&gt;</span>به سایت هوش آرا خوش آمدید<span class="tag">&lt;/h1&gt;</span><span class="cursor"></span></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="terminal-body" id="css-code">
+                                                <div class="code-line">
+                                                    <div class="line-number">1</div>
+                                                    <div class="code-content"><span class="selector">:root</span> <span class="punctuation">{</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">2</div>
+                                                    <div class="code-content">  <span class="property">--primary-color</span><span class="punctuation">:</span> <span class="value">#0066cc</span><span class="punctuation">;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">3</div>
+                                                    <div class="code-content">  <span class="property">--bg-color</span><span class="punctuation">:</span> <span class="value">#f9f3e6</span><span class="punctuation">;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">4</div>
+                                                    <div class="code-content">  <span class="property">--text-color</span><span class="punctuation">:</span> <span class="value">#333</span><span class="punctuation">;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">5</div>
+                                                    <div class="code-content"><span class="punctuation">}</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">6</div>
+                                                    <div class="code-content"><span class="selector">body</span> <span class="punctuation">{</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">7</div>
+                                                    <div class="code-content">  <span class="property">font-family</span><span class="punctuation">:</span> <span class="value">'Vazirmatn', sans-serif</span><span class="punctuation">;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">8</div>
+                                                    <div class="code-content">  <span class="property">background-color</span><span class="punctuation">:</span> <span class="value">var(--bg-color)</span><span class="punctuation">;</span><span class="cursor"></span></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="terminal-body" id="js-code">
+                                                <div class="code-line">
+                                                    <div class="line-number">1</div>
+                                                    <div class="code-content"><span class="comment">// تابع رسم نمودار ریاضی</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">2</div>
+                                                    <div class="code-content"><span class="keyword">function</span> <span class="function">drawMathGraph</span><span class="punctuation">(</span><span class="variable">formula</span>, <span class="variable">min</span>, <span class="variable">max</span><span class="punctuation">)</span> <span class="punctuation">{</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">3</div>
+                                                    <div class="code-content">  <span class="keyword">const</span> <span class="variable">canvas</span> <span class="operator">=</span> <span class="variable">document</span>.<span class="function">getElementById</span><span class="punctuation">(</span><span class="string">'graphCanvas'</span><span class="punctuation">)</span>;</div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">4</div>
+                                                    <div class="code-content">  <span class="keyword">const</span> <span class="variable">ctx</span> <span class="operator">=</span> <span class="variable">canvas</span>.<span class="function">getContext</span><span class="punctuation">(</span><span class="string">'2d'</span><span class="punctuation">)</span>;</div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">5</div>
+                                                    <div class="code-content">  </div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">6</div>
+                                                    <div class="code-content">  <span class="comment">// محاسبه و رسم نمودار</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">7</div>
+                                                    <div class="code-content">  <span class="keyword">for</span> <span class="punctuation">(</span><span class="keyword">let</span> <span class="variable">x</span> <span class="operator">=</span> <span class="variable">min</span>; <span class="variable">x</span> <span class="operator"><=</span> <span class="variable">max</span>; <span class="variable">x</span> <span class="operator">+=</span> <span class="number">0.1</span><span class="punctuation">)</span> <span class="punctuation">{</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">8</div>
+                                                    <div class="code-content">    <span class="keyword">let</span> <span class="variable">y</span> <span class="operator">=</span> <span class="function">eval</span><span class="punctuation">(</span><span class="variable">formula</span><span class="punctuation">)</span>;<span class="cursor"></span></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="terminal-body" id="vue-code">
+                                                <div class="code-line">
+                                                    <div class="line-number">1</div>
+                                                    <div class="code-content"><span class="tag">&lt;template&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">2</div>
+                                                    <div class="code-content">  <span class="tag">&lt;div <span class="attribute">class</span>=<span class="value">"calculator"</span>&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">3</div>
+                                                    <div class="code-content">    <span class="tag">&lt;h2&gt;</span>ماشین حساب ریاضی<span class="tag">&lt;/h2&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">4</div>
+                                                    <div class="code-content">    <span class="tag">&lt;input <span class="attribute">v-model</span>=<span class="value">"expression"</span> <span class="attribute">@keyup.enter</span>=<span class="value">"calculate"</span> /&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">5</div>
+                                                    <div class="code-content">    <span class="tag">&lt;button <span class="attribute">@click</span>=<span class="value">"calculate"</span>&gt;</span>محاسبه<span class="tag">&lt;/button&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">6</div>
+                                                    <div class="code-content">    <span class="tag">&lt;div <span class="attribute">class</span>=<span class="value">"result"</span>&gt;</span>{{ result }}<span class="tag">&lt;/div&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">7</div>
+                                                    <div class="code-content">  <span class="tag">&lt;/div&gt;</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">8</div>
+                                                    <div class="code-content"><span class="tag">&lt;/template&gt;</span><span class="cursor"></span></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="terminal-body" id="react-code">
+                                                <div class="code-line">
+                                                    <div class="line-number">1</div>
+                                                    <div class="code-content"><span class="keyword">import</span> <span class="variable">React</span>, { <span class="variable">useState</span> } <span class="keyword">from</span> <span class="string">'react'</span>;</div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">2</div>
+                                                    <div class="code-content"></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">3</div>
+                                                    <div class="code-content"><span class="keyword">function</span> <span class="function">MathCalculator</span><span class="punctuation">()</span> <span class="punctuation">{</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">4</div>
+                                                    <div class="code-content">  <span class="keyword">const</span> [<span class="variable">expression</span>, <span class="variable">setExpression</span>] <span class="operator">=</span> <span class="function">useState</span><span class="punctuation">(</span><span class="string">''</span><span class="punctuation">)</span>;</div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">5</div>
+                                                    <div class="code-content">  <span class="keyword">const</span> [<span class="variable">result</span>, <span class="variable">setResult</span>] <span class="operator">=</span> <span class="function">useState</span><span class="punctuation">(</span><span class="string">''</span><span class="punctuation">)</span>;</div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">6</div>
+                                                    <div class="code-content">  </div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">7</div>
+                                                    <div class="code-content">  <span class="keyword">const</span> <span class="function">calculate</span> <span class="operator">=</span> <span class="punctuation">()</span> <span class="operator">=></span> <span class="punctuation">{</span></div>
+                                                </div>
+                                                <div class="code-line">
+                                                    <div class="line-number">8</div>
+                                                    <div class="code-content">    <span class="function">setResult</span><span class="punctuation">(</span><span class="function">eval</span><span class="punctuation">(</span><span class="variable">expression</span><span class="punctuation">)</span><span class="punctuation">)</span>;<span class="cursor"></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- بخش طراح سایت - طراحی جدید و خلاقانه -->
+                            <section class="about-section designer-section reveal-section">
+                                <div class="section-content">
+                                    <h2 class="fa-lang section-title">طراح سایت</h2>
+                                    <h2 class="en-lang section-title">Site Designer</h2>
+                                    <div class="designer-profile">
+                                        <div class="designer-image-container">
+                                            <div class="designer-portrait">
+                                                ادامه کد HTML از قسمت قطع شده:
+
+                                                ```html
+                                                                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Designer" class="designer-image">
+                                                                            </div>
+                                                                            <div class="designer-frame"></div>
+                                                                        </div>
+                                                                        <div class="designer-tools">
+                                                                            <div class="tool-icon">
+                                                                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma">
+                                                                            </div>
+                                                                            <div class="tool-icon">
+                                                                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/photoshop/photoshop-plain.svg" alt="Photoshop">
+                                                                            </div>
+                                                                            <div class="tool-icon">
+                                                                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg" alt="Illustrator">
+                                                                            </div>
+                                                                            <div class="tool-icon">
+                                                                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-plain.svg" alt="Adobe XD">
+                                                                            </div>
+                                                                            <div class="tool-icon">
+                                                                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sketch/sketch-original.svg" alt="Sketch">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="designer-info">
+                                                                            <h3 class="designer-name fa-lang">سارا احمدی</h3>
+                                                                            <h3 class="designer-name en-lang">Sara Ahmadi</h3>
+                                                                            <div class="designer-title fa-lang">طراح رابط کاربری و تجربه کاربری</div>
+                                                                            <div class="designer-title en-lang">UI/UX Designer</div>
+                                                                            <p class="designer-bio fa-lang">سارا احمدی با بیش از 6 سال تجربه در طراحی رابط کاربری و تجربه کاربری، مسئول طراحی بصری و ساختار تعاملی سایت هوش آرا است. او با ترکیبی از خلاقیت و درک عمیق از نیازهای کاربران، تجربه‌ای جذاب و کاربرپسند برای یادگیری ریاضی طراحی کرده است.</p>
+                                                                            <p class="designer-bio en-lang">Sara Ahmadi, with over 6 years of experience in UI/UX design, is responsible for the visual design and interactive structure of the Hoosh Ara site. With a combination of creativity and deep understanding of user needs, she has designed an engaging and user-friendly experience for learning mathematics.</p>
+
+                                                                            <div class="designer-social">
+                                                                                <a href="#" class="designer-social-link">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                                                                </a>
+                                                                                <a href="#" class="designer-social-link">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                                                                                </a>
+                                                                                <a href="#" class="designer-social-link">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                                                                </a>
+                                                                                <a href="#" class="designer-social-link">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="design-showcase">
+                                                                        <div class="design-gallery">
+                                                                            <div class="design-item">
+                                                                                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Design Sample" class="design-image">
+                                                                                <div class="design-overlay">
+                                                                                    <div>
+                                                                                        <div class="design-title">صفحه اصلی</div>
+                                                                                        <div class="design-tag">طراحی رابط کاربری</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="design-item">
+                                                                                <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Design Sample" class="design-image">
+                                                                                <div class="design-overlay">
+                                                                                    <div>
+                                                                                        <div class="design-title">صفحه محاسبات</div>
+                                                                                        <div class="design-tag">تجربه کاربری</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="design-item">
+                                                                                <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Design Sample" class="design-image">
+                                                                                <div class="design-overlay">
+                                                                                    <div>
+                                                                                        <div class="design-title">رسم نمودار</div>
+                                                                                        <div class="design-tag">طراحی تعاملی</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="design-item">
+                                                                                <img src="https://images.unsplash.com/photo-1581291518770-b23886dc81d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Design Sample" class="design-image">
+                                                                                <div class="design-overlay">
+                                                                                    <div>
+                                                                                        <div class="design-title">مجموعه‌ها</div>
+                                                                                        <div class="design-tag">طراحی گرافیکی</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- صفحه محاسبات -->
+                                                    <div class="calculation-page" id="calculationPage">
+                                                        <div class="calculation-header">
+                                                            <div class="calculation-title fa-lang">محاسبات ریاضی</div>
+                                                            <div class="calculation-title en-lang">Mathematical Calculations</div>
+                                                            <button class="back-button" onclick="closeCalculationPage()">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                                                </svg>
+                                                                <span class="fa-lang">بازگشت</span>
+                                                                <span class="en-lang">Back</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="calculation-content">
+                                                            <div class="calculator-container">
+                                                                <div class="calculator-header">
+                                                                    <h2 class="fa-lang">ماشین حساب ریاضی</h2>
+                                                                    <h2 class="en-lang">Math Calculator</h2>
+                                                                    <p class="fa-lang">از این ابزار برای محاسبات پیچیده ریاضی استفاده کنید.</p>
+                                                                    <p class="en-lang">Use this tool for complex mathematical calculations.</p>
+                                                                </div>
+
+                                                                <div class="calculator-form">
+                                                                    <div class="form-group">
+                                                                        <label class="fa-lang">عبارت ریاضی:</label>
+                                                                        <label class="en-lang">Mathematical Expression:</label>
+                                                                        <input type="text" id="mathExpression" placeholder="مثال: 2 * (3 + 4)" />
+                                                                    </div>
+                                                                    <button class="calculate-btn" onclick="calculateMath()">
+                                                                        <span class="fa-lang">محاسبه</span>
+                                                                        <span class="en-lang">Calculate</span>
+                                                                    </button>
+                                                                    <div class="result-container" id="mathResult">
+                                                                        <div class="result-value">14</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="calculator-container">
+                                                                <div class="calculator-header">
+                                                                    <h2 class="fa-lang">محاسبه مساحت و محیط</h2>
+                                                                    <h2 class="en-lang">Area and Perimeter Calculator</h2>
+                                                                    <p class="fa-lang">مساحت و محیط اشکال مختلف را محاسبه کنید.</p>
+                                                                    <p class="en-lang">Calculate the area and perimeter of different shapes.</p>
+                                                                </div>
+
+                                                                <div class="calculator-form">
+                                                                    <div class="form-group">
+                                                                        <label class="fa-lang">انتخاب شکل:</label>
+                                                                        <label class="en-lang">Select Shape:</label>
+                                                                        <select id="shapeSelect">
+                                                                            <option value="circle" class="fa-lang">دایره</option>
+                                                                            <option value="circle" class="en-lang">Circle</option>
+                                                                            <option value="square" class="fa-lang">مربع</option>
+                                                                            <option value="square" class="en-lang">Square</option>
+                                                                            <option value="rectangle" class="fa-lang">مستطیل</option>
+                                                                            <option value="rectangle" class="en-lang">Rectangle</option>
+                                                                            <option value="triangle" class="fa-lang">مثلث</option>
+                                                                            <option value="triangle" class="en-lang">Triangle</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group" id="circleInputs">
+                                                                        <label class="fa-lang">شعاع دایره (سانتی‌متر):</label>
+                                                                        <label class="en-lang">Circle Radius (cm):</label>
+                                                                        <input type="number" id="circleRadius" min="0" step="0.1" value="5" />
+                                                                    </div>
+                                                                    <button class="calculate-btn" onclick="calculateGeometry()">
+                                                                        <span class="fa-lang">محاسبه</span>
+                                                                        <span class="en-lang">Calculate</span>
+                                                                    </button>
+                                                                    <div class="result-container" id="geometryResult">
+                                                                        <div class="result-value fa-lang">مساحت: 78.54 سانتی‌متر مربع | محیط: 31.42 سانتی‌متر</div>
+                                                                        <div class="result-value en-lang">Area: 78.54 cm² | Perimeter: 31.42 cm</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- صفحه رسم نمودار -->
+                                                    <div class="graph-page" id="graphPage">
+                                                        <div class="graph-header">
+                                                            <div class="graph-title fa-lang">رسم نمودار</div>
+                                                            <div class="graph-title en-lang">Graph Drawing</div>
+                                                            <button class="back-button" onclick="closeGraphPage()">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                                                </svg>
+                                                                <span class="fa-lang">بازگشت</span>
+                                                                <span class="en-lang">Back</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="graph-content">
+                                                            <div class="graph-container">
+                                                                <div class="graph-header-inner">
+                                                                    <h2 class="fa-lang">رسم نمودار توابع ریاضی</h2>
+                                                                    <h2 class="en-lang">Mathematical Function Plotting</h2>
+                                                                    <p class="fa-lang">نمودار توابع ریاضی را رسم کنید و آن‌ها را تحلیل کنید.</p>
+                                                                    <p class="en-lang">Plot mathematical functions and analyze them.</p>
+                                                                </div>
+
+                                                                <div class="graph-toolbar">
+                                                                    <button class="graph-tool-btn active" data-tool="pan">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 8V6a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                                                    </button>
+                                                                    <button class="graph-tool-btn" data-tool="zoom-in">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                                                                    </button>
+                                                                    <button class="graph-tool-btn" data-tool="zoom-out">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                                                                    </button>
+                                                                    <button class="graph-tool-btn" data-tool="reset">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"></path><path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg>
+                                                                    </button>
+                                                                    <button class="graph-tool-btn" data-tool="grid">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+                                                                    </button>
+                                                                    <button class="graph-tool-btn" data-tool="save">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                                                                    </button>
+                                                                </div>
+
+                                                                <div class="function-input-container">
+                                                                    <span class="function-label fa-lang">f(x) =</span>
+                                                                    <span class="function-label en-lang">f(x) =</span>
+                                                                    <input type="text" class="function-input" id="functionInput" placeholder="x" value="x">
+                                                                    <button class="function-btn fa-lang" onclick="drawFunction()">رسم</button>
+                                                                    <button class="function-btn en-lang" onclick="drawFunction()">Draw</button>
+                                                                </div>
+
+                                                                <div class="graph-drawing-area" id="graphDrawingArea">
+                                                                    <!-- نمودار اینجا رسم می‌شود -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- انیمیشن تغییر تم -->
+                                                    <div class="theme-switch-animation" id="themeSwitchAnimation">
+                                                        <div class="day-night-scene">
+                                                            <div class="sky-background day-sky"></div>
+                                                            <div class="sky-background night-sky"></div>
+
+                                                            <div class="sun-moon sun">
+                                                                <div class="sun-rays">
+                                                                    <div class="sun-ray"></div>
+                                                                    <div class="sun-ray"></div>
+                                                                    <div class="sun-ray"></div>
+                                                                    <div class="sun-ray"></div>
+                                                                    <div class="sun-ray"></div>
+                                                                    <div class="sun-ray"></div>
+                                                                    <div class="sun-ray"></div>
+                                                                    <div class="sun-ray"></div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="clouds">
+                                                                <div class="cloud cloud-1"></div>
+                                                                <div class="cloud cloud-2"></div>
+                                                            </div>
+
+                                                            <div class="sun-moon moon">
+                                                                <div class="moon-crater crater-1"></div>
+                                                                <div class="moon-crater crater-2"></div>
+                                                                <div class="moon-crater crater-3"></div>
+                                                            </div>
+
+                                                            <div class="stars">
+                                                                <div class="star"></div>
+                                                                <div class="star"></div>
+                                                                <div class="star"></div>
+                                                                <div class="star"></div>
+                                                                <div class="star"></div>
+                                                                <div class="star"></div>
+                                                                <div class="star"></div>
+                                                                <div class="star"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <script>
+                                                        // تنظیم وضعیت اولیه
+                                                        document.addEventListener('DOMContentLoaded', function() {
+                                                            // فعال‌سازی انیمیشن‌های صفحه درباره ما
+                                                            const sections = document.querySelectorAll('.reveal-section');
+                                                            sections.forEach(section => {
+                                                                section.classList.add('active');
+                                                            });
+
+                                                            // فعال‌سازی نمودار درصد کدها
+                                                            const chartBars = document.querySelectorAll('.chart-bar');
+                                                            chartBars.forEach(bar => {
+                                                                bar.classList.add('animated');
+                                                            });
+
+                                                            // رسم نمودار در صفحه رسم نمودار
+                                                            setupGraph();
+                                                        });
+
+                                                        // نمایش/مخفی‌سازی منوی تنظیمات
+                                                        function toggleSettingsMenu() {
+                                                            const settingsIcon = document.getElementById('settingsIcon');
+                                                            const settingsMenu = document.getElementById('settingsMenu');
+
+                                                            settingsIcon.classList.toggle('active');
+                                                            settingsMenu.classList.toggle('active');
+                                                        }
+
+                                                        // نمایش صفحه درباره ما
+                                                        function showAboutPage() {
+                                                            document.getElementById('aboutPage').classList.add('active');
+                                                            toggleSettingsMenu();
+                                                        }
+
+                                                        // بستن صفحه درباره ما
+                                                        function closeAboutPage() {
+                                                            document.getElementById('aboutPage').classList.remove('active');
+                                                        }
+
+                                                        // نمایش صفحه محاسبات
+                                                        function showCalculationPage() {
+                                                            document.getElementById('calculationPage').classList.add('active');
+                                                        }
+
+                                                        // بستن صفحه محاسبات
+                                                        function closeCalculationPage() {
+                                                            document.getElementById('calculationPage').classList.remove('active');
+                                                        }
+
+                                                        // نمایش صفحه رسم نمودار
+                                                        function showGraphPage() {
+                                                            document.getElementById('graphPage').classList.add('active');
+                                                            setTimeout(() => {
+                                                                setupGraph();
+                                                            }, 500);
+                                                        }
+
+                                                        // بستن صفحه رسم نمودار
+                                                        function closeGraphPage() {
+                                                            document.getElementById('graphPage').classList.remove('active');
+                                                        }
+
+                                                        // تغییر تم سایت (روشن/تاریک)
+                                                        function toggleTheme() {
+                                                            const body = document.body;
+                                                            const themeAnimation = document.getElementById('themeSwitchAnimation');
+
+                                                            themeAnimation.classList.add('active');
+
+                                                            setTimeout(() => {
+                                                                body.classList.toggle('dark-theme');
+                                                                body.classList.toggle('light-theme');
+                                                            }, 500);
+
+                                                            setTimeout(() => {
+                                                                themeAnimation.classList.remove('active');
+                                                            }, 2000);
+
+                                                            toggleSettingsMenu();
+                                                        }
+
+                                                        // تغییر زبان سایت
+                                                        function toggleLanguage() {
+                                                            const html = document.documentElement;
+                                                            html.setAttribute('lang', html.getAttribute('lang') === 'fa' ? 'en' : 'fa');
+                                                            toggleSettingsMenu();
+                                                        }
+
+                                                        // تابع محاسبه ریاضی
+                                                        function calculateMath() {
+                                                            const expression = document.getElementById('mathExpression').value;
+                                                            const resultContainer = document.getElementById('mathResult');
+
+                                                            try {
+                                                                const result = eval(expression);
+                                                                resultContainer.querySelector('.result-value').textContent = result;
+                                                                resultContainer.classList.add('active');
+                                                            } catch (error) {
+                                                                resultContainer.querySelector('.result-value').textContent = 'خطا در محاسبه';
+                                                                resultContainer.classList.add('active');
+                                                            }
+                                                        }
+
+                                                        // تابع محاسبه هندسی
+                                                        function calculateGeometry() {
+                                                            const shape = document.getElementById('shapeSelect').value;
+                                                            const resultContainer = document.getElementById('geometryResult');
+                                                            let result = '';
+
+                                                            if (shape === 'circle') {
+                                                                const radius = parseFloat(document.getElementById('circleRadius').value);
+                                                                const area = Math.PI * radius * radius;
+                                                                const perimeter = 2 * Math.PI * radius;
+
+                                                                const areaFormatted = area.toFixed(2);
+                                                                const perimeterFormatted = perimeter.toFixed(2);
+
+                                                                if (document.documentElement.lang === 'fa') {
+                                                                    result = `مساحت: ${areaFormatted} سانتی‌متر مربع | محیط: ${perimeterFormatted} سانتی‌متر`;
+                                                                } else {
+                                                                    result = `Area: ${areaFormatted} cm² | Perimeter: ${perimeterFormatted} cm`;
+                                                                }
+                                                            }
+
+                                                            resultContainer.querySelector('.result-value').textContent = result;
+                                                            resultContainer.classList.add('active');
+                                                        }
+
+                                                        // تنظیم تب‌های ادیتور کد
+                                                        document.addEventListener('DOMContentLoaded', function() {
+                                                            const tabs = document.querySelectorAll('.editor-tab');
+                                                            tabs.forEach(tab => {
+                                                                tab.addEventListener('click', function() {
+                                                                    // غیرفعال کردن همه تب‌ها
+                                                                    tabs.forEach(t => t.classList.remove('active'));
+                                                                    // فعال کردن تب کلیک شده
+                                                                    this.classList.add('active');
+
+                                                                    // مخفی کردن همه محتواهای کد
+                                                                    const codeBodies = document.querySelectorAll('.terminal-body');
+                                                                    codeBodies.forEach(body => body.classList.remove('active'));
+
+                                                                    // نمایش محتوای کد مربوط به تب فعال
+                                                                    const tabId = this.getAttribute('data-tab');
+                                                                    document.getElementById(`${tabId}-code`).classList.add('active');
+                                                                });
+                                                            });
+                                                        });
+
+                                                        // تنظیم و رسم نمودار
+                                                        function setupGraph() {
+                                                            const graphArea = document.getElementById('graphDrawingArea');
+                                                            if (!graphArea) return;
+
+                                                            // ایجاد کانواس برای رسم نمودار
+                                                            if (!document.getElementById('graphCanvas')) {
+                                                                const canvas = document.createElement('canvas');
+                                                                canvas.id = 'graphCanvas';
+                                                                canvas.width = graphArea.clientWidth;
+                                                                canvas.height = graphArea.clientHeight;
+                                                                graphArea.appendChild(canvas);
+
+                                                                // رسم نمودار اولیه
+                                                                drawFunction();
+                                                            }
+                                                        }
+
+                                                        // رسم تابع در نمودار
+                                                        function drawFunction() {
+                                                            const canvas = document.getElementById('graphCanvas');
+                                                            if (!canvas) return;
+
+                                                            const ctx = canvas.getContext('2d');
+                                                            const width = canvas.width;
+                                                            const height = canvas.height;
+
+                                                            // پاک کردن کانواس
+                                                            ctx.clearRect(0, 0, width, height);
+
+                                                            // تنظیمات نمودار
+                                                            const xMin = -6;
+                                                            const xMax = 6;
+                                                            const yMin = -4;
+                                                            const yMax = 4;
+
+                                                            // تبدیل مختصات ریاضی به مختصات کانواس
+                                                            function mapX(x) {
+                                                                return width * (x - xMin) / (xMax - xMin);
+                                                            }
+
+                                                            function mapY(y) {
+                                                                return height * (1 - (y - yMin) / (yMax - yMin));
+                                                            }
+
+                                                            // رسم محورها
+                                                            ctx.beginPath();
+                                                            ctx.strokeStyle = '#aaa';
+                                                            ctx.lineWidth = 1;
+
+                                                            // محور X
+                                                            ctx.moveTo(0, mapY(0));
+                                                            ctx.lineTo(width, mapY(0));
+
+                                                            // محور Y
+                                                            ctx.moveTo(mapX(0), 0);
+                                                            ctx.lineTo(mapX(0), height);
+
+                                                            // رسم خطوط شبکه
+                                                            for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+                                                                if (x === 0) continue; // محور اصلی را رسم نمی‌کنیم
+                                                                ctx.moveTo(mapX(x), 0);
+                                                                ctx.lineTo(mapX(x), height);
+                                                            }
+
+                                                            for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+                                                                if (y === 0) continue; // محور اصلی را رسم نمی‌کنیم
+                                                                ctx.moveTo(0, mapY(y));
+                                                                ctx.lineTo(width, mapY(y));
+                                                            }
+
+                                                            ctx.stroke();
+
+                                                            // برچسب‌های محورها
+                                                            ctx.font = '12px Arial';
+            ctx.fillStyle = '#333';
+
+            // برچسب‌های محور X
+            for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+                if (x === 0) continue; // صفر را نمایش نمی‌دهیم
+                const xPos = mapX(x);
+                const yPos = mapY(0) + 15;
+                ctx.fillText(x, xPos - 3, yPos);
+            }
+
+            // برچسب‌های محور Y
+            for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+                if (y === 0) continue; // صفر را نمایش نمی‌دهیم
+                const xPos = mapX(0) + 5;
+                const yPos = mapY(y) + 4;
+                ctx.fillText(y, xPos, yPos);
+            }
+
+            // نمایش صفر در مبدأ مختصات
+            ctx.fillText('0', mapX(0) + 5, mapY(0) + 15);
+
+            // دریافت تابع از ورودی کاربر
+            const functionInput = document.getElementById('functionInput');
+            const functionStr = functionInput.value;
+
+            // رسم تابع
+            ctx.beginPath();
+            ctx.strokeStyle = '#0066cc';
+            ctx.lineWidth = 2;
+
+            let isFirstPoint = true;
+
+            for (let i = 0; i <= width; i++) {
+                const x = xMin + (i / width) * (xMax - xMin);
+
+                try {
+                    // محاسبه y با استفاده از تابع کاربر
+                    // از eval استفاده می‌کنیم (در محیط واقعی باید از روش‌های امن‌تر استفاده شود)
+                    const y = eval(functionStr.replace(/x/g, x));
+
+                    if (isNaN(y) || !isFinite(y)) continue;
+
+                    const canvasY = mapY(y);
+
+                    if (canvasY < 0 || canvasY > height) continue;
+
+                    if (isFirstPoint) {
+                        ctx.moveTo(i, canvasY);
+                        isFirstPoint = false;
+                    } else {
+                        ctx.lineTo(i, canvasY);
+                    }
+                } catch (error) {
+                    console.error('Error evaluating function:', error);
+                }
+            }
+
+            ctx.stroke();
+        }
+
+        // تغییر اندازه نمودار با تغییر اندازه پنجره
+        window.addEventListener('resize', function() {
+            const canvas = document.getElementById('graphCanvas');
+            const graphArea = document.getElementById('graphDrawingArea');
+
+            if (canvas && graphArea) {
+                canvas.width = graphArea.clientWidth;
+                canvas.height = graphArea.clientHeight;
+                drawFunction();
+            }
+        });
+    </script>
+</body>
+</html>
+
